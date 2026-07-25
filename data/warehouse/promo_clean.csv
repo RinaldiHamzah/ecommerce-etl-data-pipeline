@@ -1,0 +1,11 @@
+promo_code,nama_promo,tipe_diskon,nilai_diskon,tanggal_mulai,tanggal_selesai,status
+KAHFBARU,Diskon Pengguna Baru,Fixed,15000,2024-01-01,2024-12-31,Active
+GAJIAN50,Diskon Gajian,Fixed,20000,2024-04-25,2024-05-05,Active
+RAMADHAN,Promo Ramadhan,Percentage,15,2024-03-10,2024-04-10,Expired
+FACECARE10,Diskon Kategori Face Care,Percentage,10,2024-05-01,2024-07-31,Active
+FLASH25,Flash Sale 25%,Percentage,25,2024-06-01,2024-06-03,Expired
+PARFUMKAHF,Diskon Fragrance,Percentage,12,2024-05-01,2024-08-31,Active
+GRATISONGKIR,Gratis Ongkir,Fixed,10000,2024-02-01,2024-02-29,Expired
+VIP20,Diskon Member Vip,Percentage,20,2024-01-15,2024-12-31,Active
+WEEKEND15,Diskon Akhir Pekan,Percentage,16,2024-06-01,2024-08-31,Active
+CUCI GUDANG,Cuci Gudang Juli,Fixed,15000,2024-07-01,2024-07-15,Expired

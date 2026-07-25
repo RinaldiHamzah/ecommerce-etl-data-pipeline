@@ -1,0 +1,38 @@
+product_id,gudang,stok_tersedia,last_update
+P001,Gudang Bandung,40,15/06/2024
+P001,GUDANG MEDAN,80,2024-07-01
+P001,gudang makassar,0,2024-07-12 11:51:00
+P002,Gudang Jakarta,10,2024-07-16 06:30:00
+P002,Gudang Bandung,80,26/06/2024
+P002,GUDANG MEDAN,10,2024-06-11
+P003,Gudang Jakarta,,2024-07-10
+P003,GUDANG MEDAN,80,2024-07-06
+P003,gudang makassar,0,12/07/2024
+P004,Gudang Jakarta,25,2024-06-13 06:01:00
+P004,Gudang Surabaya,60,2024-07-08
+P004,Gudang Bandung,-5,2024-06-09 01:58:00
+P004,GUDANG MEDAN,,2024-07-03 04:34:00
+P004,gudang makassar,-5,29/06/2024
+P005,Gudang Surabaya,25,2024-06-10
+P005,Gudang Bandung,10,21/06/2024
+P005,GUDANG MEDAN,-5,2024-06-07 17:03:00
+P005,gudang makassar,60,07/06/2024
+P006,Gudang Jakarta,-5,05/06/2024
+P006,Gudang Surabaya,-5,2024-07-15
+P006,Gudang Bandung,-5,2024-07-03 07:44:00
+P006,GUDANG MEDAN,60,2024-06-29
+P006,gudang makassar,10,2024-06-29 10:04:00
+P007,Gudang Jakarta,100,14/06/2024
+P007,Gudang Surabaya,10,2024-07-16
+P007,Gudang Bandung,80,2024-06-17
+P008,Gudang Jakarta,10,2024-07-02 05:42:00
+P008,Gudang Bandung,100,2024-06-22 13:12:00
+P008,GUDANG MEDAN,10,"Jun 02, 2024"
+P008,gudang makassar,,2024-07-16 00:24:00
+P009,Gudang Jakarta,60,08/06/2024
+P009,gudang makassar,60,"Jun 03, 2024"
+P010,Gudang Surabaya,25,2024-07-14 08:25:00
+P010,Gudang Bandung,-5,2024-07-15 10:05:00
+P010,GUDANG MEDAN,25,2024-06-05 08:01:00
+P010,gudang makassar,60,09/07/2024
+P005,Gudang Surabaya,15,2024-06-10

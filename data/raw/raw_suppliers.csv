@@ -1,0 +1,12 @@
+supplier_id,product_id,nama_supplier,kontak,kota,lead_time_hari
+SUP-001,P001,Gudang Kosmetik Utama,021-4749746,Cikarang,-1
+SUP-002,P002,Toko Bahan Baku Kosmetik,,bandung,7
+SUP-003,P003,Toko Bahan Baku Kosmetik,021-2455921,Tangerang,7
+SUP-004,P004,PT Kemasan Halal Indonesia,021-5548518,Tangerang,
+SUP-005,P005,CV Packaging Solusi,021-1807451,Cikarang,3
+SUP-006,P006,Toko Bahan Baku Kosmetik,021-3651911,Bandung,3
+SUP-007,P007,CV Botol & Tube Indonesia,021-9966798,bandung,2
+SUP-008,P008,PT Fragrance Import Indonesia,021-3079429,Bandung,
+SUP-009,P009,Toko Bahan Baku Kosmetik,021-2425848,Bandung,3
+SUP-010,P010,PT Distribusi Personal Care,021-5106213,Bandung,7
+SUP-099,P003,PT Distribusi Personal Care,021-2455921,Tangerang,7
