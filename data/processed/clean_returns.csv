@@ -1,0 +1,36 @@
+return_id,order_id,alasan_return,status_return,quantity_return,refund_amount,tanggal_return
+RET-2001,ORD-10070,Produk Tidak Cocok Di Kulit,Pending,1,45000,2024-06-07
+RET-2002,ORD-10057,Produk Tidak Cocok,Pending,1,149000,2024-07-27
+RET-2003,ORD-10045,Iritasi Ringan,Pending,2,116000,2024-05-13
+RET-2004,ORD-10096,Duplikat Pesanan,Approved,1,45000,2024-05-27
+RET-2005,ORD-10019,Salah Varian,Pending,1,38000,2024-07-14
+RET-2007,ORD-10101,Berubah Pikiran,Pending,1,149000,2024-06-06
+RET-2008,ORD-10094,Iritasi Ringan,Approved,2,298000,2024-05-20
+RET-2009,ORD-10130,Tidak Sesuai Deskripsi,Approved,1,65000,2024-07-11
+RET-2010,ORD-10123,Alergi Kandungan Produk,Rejected,1,34000,2024-07-14
+RET-2011,ORD-10003,Iritasi Ringan,Rejected,1,149000,2024-07-29
+RET-2012,ORD-10030,Iritasi Ringan,Approved,1,42000,2024-07-27
+RET-2013,ORD-10114,Berubah Pikiran,Processed,2,64000,2024-05-03
+RET-2014,ORD-10124,Alergi Kandungan Produk,Pending,3,447000,2024-05-28
+RET-2015,ORD-10120,Produk Tidak Cocok,Processed,1,149000,2024-11-05
+RET-2016,ORD-10053,Rusak Saat Pengiriman,Approved,1,34000,2024-06-25
+RET-2017,ORD-10012,Berubah Pikiran,Processed,2,64000,2024-05-30
+RET-2018,ORD-10085,Iritasi Ringan,Pending,1,65000,2024-05-02
+RET-2019,ORD-10065,,Pending,1,58000,2024-06-23
+RET-2020,ORD-10038,Alergi Kandungan Produk,Pending,2,298000,2024-07-28
+RET-2021,ORD-10079,,Processed,1,38000,2024-07-27
+RET-2022,ORD-10023,Tidak Sesuai Deskripsi,Approved,2,64000,2024-07-21
+RET-2023,ORD-10066,Produk Tidak Cocok Di Kulit,Pending,1,65000,2024-05-21
+RET-2024,ORD-10087,Alergi Kandungan Produk,Pending,1,42000,2024-05-20
+RET-2025,ORD-10117,Iritasi Ringan,Rejected,2,90000,2024-05-27
+RET-2026,ORD-10086,Tidak Sesuai Deskripsi,Pending,1,58000,2024-07-17
+RET-2027,ORD-10031,Rusak Saat Pengiriman,Approved,1,32000,2024-07-01
+RET-2028,ORD-10074,Berubah Pikiran,Approved,1,38000,2024-06-03
+RET-2029,ORD-10103,Duplikat Pesanan,Pending,2,298000,2024-07-07
+RET-2030,ORD-10042,Produk Tidak Cocok,Processed,3,195000,2024-06-08
+RET-2031,ORD-10089,Iritasi Ringan,Processed,1,58000,2024-06-15
+RET-2032,ORD-10008,Lainnya,Pending,1,25000,2024-07-18
+RET-2033,ORD-10067,Kemasan Bocor,Rejected,1,25000,2024-05-26
+RET-2034,ORD-10024,Rusak Saat Pengiriman,Rejected,1,149000,2024-05-04
+RET-2035,ORD-10025,Rusak Saat Pengiriman,Rejected,1,58000,2024-06-27
+RET-2006,ORD-10125,Alergi Kandungan Produk,Rejected,1,25000,2024-05-11
