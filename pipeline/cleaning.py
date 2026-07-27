@@ -15,7 +15,6 @@ def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = new_cols
     return df
 
-
 def parse_date(series: pd.Series) -> pd.Series:
     """
     Parsing tanggal campuran (dd/mm/yyyy, ISO, 'Mon dd, yyyy', dst) dengan
@@ -24,7 +23,6 @@ def parse_date(series: pd.Series) -> pd.Series:
     """
     parsed = pd.to_datetime(series, errors="coerce", dayfirst=True, format="mixed")
     return parsed.dt.strftime("%Y-%m-%d")
-
 
 def parse_date_iso(series: pd.Series) -> pd.Series:
     """
@@ -35,6 +33,18 @@ def parse_date_iso(series: pd.Series) -> pd.Series:
     parsed = pd.to_datetime(series, errors="coerce", format="mixed")
     return parsed.dt.strftime("%Y-%m-%d")
 
+
+def filter_existing_references(
+    df: pd.DataFrame,
+    column: str,
+    reference_df: pd.DataFrame,
+    reference_column: str,
+) -> pd.DataFrame:
+    if column not in df.columns or reference_column not in reference_df.columns:
+        return df
+
+    valid_values = set(reference_df[reference_column].dropna().astype(str).str.strip().str.upper())
+    return df[df[column].astype(str).str.strip().str.upper().isin(valid_values)]
 
 # ---------------------------------------------------------------------------
 # PRODUCTS
@@ -230,7 +240,6 @@ def clean_customers(df: pd.DataFrame) -> pd.DataFrame:
  
     return df.reset_index(drop=True)
 
-
 # ---------------------------------------------------------------------------
 # INVENTORY
 # ---------------------------------------------------------------------------
@@ -260,13 +269,18 @@ def clean_inventory(df: pd.DataFrame) -> pd.DataFrame:
 
     return df.reset_index(drop=True)
 
-
 # ---------------------------------------------------------------------------
 # ORDERS
 # ---------------------------------------------------------------------------
-def clean_orders(df: pd.DataFrame, products_df: pd.DataFrame) -> pd.DataFrame:
+def clean_orders(
+    df: pd.DataFrame,
+    products_df: pd.DataFrame,
+    customers_df: pd.DataFrame | None = None,
+) -> pd.DataFrame:
     df = normalize_columns(df)
     products_df = normalize_columns(products_df)
+    if customers_df is not None:
+        customers_df = normalize_columns(customers_df)
 
     if "product_id" in df.columns:
         df["product_id"] = df["product_id"].astype(str).str.strip().str.upper()
@@ -314,6 +328,17 @@ def clean_orders(df: pd.DataFrame, products_df: pd.DataFrame) -> pd.DataFrame:
         df.loc[~df["customer_email"].str.contains("@", na=False), "customer_email"] = np.nan
         df["customer_email"] = df["customer_email"].fillna("dummy123@gmail.com")
 
+    if (
+        customers_df is not None
+        and "customer_email" in df.columns
+        and {"customer_id", "customer_email"}.issubset(customers_df.columns)
+    ):
+        customer_lookup = customers_df[["customer_id", "customer_email"]].copy()
+        customer_lookup["customer_email"] = customer_lookup["customer_email"].astype(str).str.strip().str.lower()
+        customer_lookup["customer_id"] = customer_lookup["customer_id"].astype(str).str.strip().str.upper()
+        customer_lookup = customer_lookup.drop_duplicates(subset=["customer_email"], keep="last")
+        df = df.merge(customer_lookup, on="customer_email", how="left")
+
     if "order_id" in df.columns:
         df["order_id"] = df["order_id"].astype(str).str.strip().str.upper()
         df = df.dropna(subset=["order_id"])
@@ -321,12 +346,12 @@ def clean_orders(df: pd.DataFrame, products_df: pd.DataFrame) -> pd.DataFrame:
 
     return df.reset_index(drop=True)
 
-
 # ---------------------------------------------------------------------------
 # PAYMENTS
 # ---------------------------------------------------------------------------
-def clean_payments(df: pd.DataFrame) -> pd.DataFrame:
+def clean_payments(df: pd.DataFrame, orders_df: pd.DataFrame) -> pd.DataFrame:
     df = normalize_columns(df)
+    orders_df = normalize_columns(orders_df)
 
     if "metode_pembayaran" in df.columns:
         mapping = {
@@ -361,6 +386,7 @@ def clean_payments(df: pd.DataFrame) -> pd.DataFrame:
 
     if "order_id" in df.columns:
         df["order_id"] = df["order_id"].astype(str).str.strip().str.upper()
+        df = filter_existing_references(df, "order_id", orders_df, "order_id")
         df = df.drop_duplicates(subset=["order_id"], keep="last")
 
     # Baris tanpa jumlah_bayar (kosong / negatif -> NaN) dibuang karena
@@ -371,12 +397,12 @@ def clean_payments(df: pd.DataFrame) -> pd.DataFrame:
 
     return df.reset_index(drop=True)
 
-
 # ---------------------------------------------------------------------------
 # RETURNS
 # ---------------------------------------------------------------------------
 def clean_returns(df: pd.DataFrame, orders_df: pd.DataFrame) -> pd.DataFrame:
     df = normalize_columns(df)
+    orders_df = normalize_columns(orders_df)
 
     if "quantity_return" in df.columns:
         df["quantity_return"] = pd.to_numeric(df["quantity_return"], errors="coerce")
@@ -402,6 +428,7 @@ def clean_returns(df: pd.DataFrame, orders_df: pd.DataFrame) -> pd.DataFrame:
 
     if "order_id" in df.columns:
         df["order_id"] = df["order_id"].astype(str).str.strip().str.upper()
+        df = filter_existing_references(df, "order_id", orders_df, "order_id")
 
     # Baris tanpa alasan / jumlah / nominal refund dibuang karena data
     # retur tidak lengkap untuk diproses lebih lanjut.
@@ -411,18 +438,21 @@ def clean_returns(df: pd.DataFrame, orders_df: pd.DataFrame) -> pd.DataFrame:
 
     return df.reset_index(drop=True)
 
-
 # ---------------------------------------------------------------------------
 # ORDER_PROMO (bridge table)
 # ---------------------------------------------------------------------------
-def clean_order_promo(df: pd.DataFrame) -> pd.DataFrame:
+def clean_order_promo(df: pd.DataFrame, orders_df: pd.DataFrame, promo_df: pd.DataFrame) -> pd.DataFrame:
     df = normalize_columns(df)
+    orders_df = normalize_columns(orders_df)
+    promo_df = normalize_columns(promo_df)
 
     df["order_id"] = df["order_id"].astype(str).str.strip().str.upper()
     df["promo_code"] = df["promo_code"].astype(str).str.strip().str.upper()
 
     df = df.dropna(subset=["order_id", "promo_code"])
     df = df[(df["order_id"] != "") & (df["promo_code"] != "")]
+    df = filter_existing_references(df, "order_id", orders_df, "order_id")
+    df = filter_existing_references(df, "promo_code", promo_df, "promo_code")
     df = df.drop_duplicates(subset=["order_id", "promo_code"], keep="last")
 
     df = df.sort_values("order_id").reset_index(drop=True)

@@ -1,3 +1,9 @@
+from pathlib import Path
+import sys
+
+if __package__ is None:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from pipeline.cleaning import (
     clean_customers,
     clean_inventory,
@@ -11,6 +17,7 @@ from pipeline.cleaning import (
 from pipeline.input_output import load_raw_data, write_processed_files
 from pipeline.path import RAW_FILES, ROOT, WAREHOUSE_DIR
 from pipeline.cek_quality import check_zero_columns
+from pipeline.validation import print_validation_report, validate_tables
 
 def run_pipeline() -> None:
     print("ROOT:", ROOT)
@@ -33,16 +40,16 @@ def run_pipeline() -> None:
     inventory = clean_inventory(load_raw_data(RAW_FILES["inventory"]))
     cleaned_tables["inventory"] = inventory
 
-    orders = clean_orders(load_raw_data(RAW_FILES["orders"]), products)
+    orders = clean_orders(load_raw_data(RAW_FILES["orders"]), products, customers)
     cleaned_tables["orders"] = orders
 
-    payments = clean_payments(load_raw_data(RAW_FILES["payments"]))
+    payments = clean_payments(load_raw_data(RAW_FILES["payments"]), orders)
     cleaned_tables["payments"] = payments
 
     returns = clean_returns(load_raw_data(RAW_FILES["returns"]), orders)
     cleaned_tables["returns"] = returns
 
-    order_promo = clean_order_promo(load_raw_data(RAW_FILES["order_promo"]))
+    order_promo = clean_order_promo(load_raw_data(RAW_FILES["order_promo"]), orders, promo)
     cleaned_tables["order_promo"] = order_promo
 
     write_processed_files(cleaned_tables)
@@ -52,3 +59,9 @@ def run_pipeline() -> None:
         print(f"- {name}: {len(tdf)} baris, {len(tdf.columns)} kolom")
 
     check_zero_columns(cleaned_tables)
+    issues = validate_tables(cleaned_tables)
+    print_validation_report(issues)
+
+
+if __name__ == "__main__":
+    run_pipeline()
