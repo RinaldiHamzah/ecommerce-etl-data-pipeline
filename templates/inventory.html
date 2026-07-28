@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block heading %}Inventory Analytics{% endblock %}
+{% block eyebrow %}Stock health and supplier performance{% endblock %}
+{% block content %}
+<section class="grid two">
+    <article class="panel"><div class="panel-header"><h2>Inventory Status</h2><span>Total stock</span></div><div class="chart">{{ stock_chart | safe }}</div></article>
+    <article class="panel"><div class="panel-header"><h2>Supplier Lead Time</h2><span>Average days</span></div><div class="chart">{{ supplier_chart | safe }}</div></article>
+</section>
+<section class="grid two">
+    <article class="panel">
+        <div class="panel-header"><h2>Inventory Alert</h2><span>Low stock warehouses</span></div>
+        {% set rows = inventory_status %}
+        {% set columns = [
+            {"key": "product_name", "label": "Product"},
+            {"key": "kategori", "label": "Category"},
+            {"key": "total_stok", "label": "Stock", "type": "number"},
+            {"key": "gudang_stok_menipis", "label": "Low Stock WH", "type": "number"}
+        ] %}
+        {% include "_table.html" %}
+    </article>
+    <article class="panel">
+        <div class="panel-header"><h2>Supplier Performance</h2><span>Lead time</span></div>
+        {% set rows = supplier_performance %}
+        {% set columns = [
+            {"key": "nama_supplier", "label": "Supplier"},
+            {"key": "kota", "label": "City"},
+            {"key": "avg_lead_time", "label": "Avg Lead Time", "type": "number"},
+            {"key": "jumlah_produk", "label": "Products", "type": "number"}
+        ] %}
+        {% include "_table.html" %}
+    </article>
+</section>
+{% endblock %}

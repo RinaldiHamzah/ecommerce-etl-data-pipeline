@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block heading %}Return Analytics{% endblock %}
+{% block eyebrow %}Reasons, quantity, and refund exposure{% endblock %}
+{% block content %}
+<section class="grid two">
+    <article class="panel"><div class="panel-header"><h2>Return Reasons</h2><span>Case count</span></div><div class="chart">{{ return_chart | safe }}</div></article>
+    <article class="panel">
+        <div class="panel-header"><h2>Return Summary</h2><span>Refund amount</span></div>
+        {% set rows = return_reasons %}
+        {% set columns = [
+            {"key": "alasan_return", "label": "Reason"},
+            {"key": "jumlah_retur", "label": "Returns", "type": "number"},
+            {"key": "total_qty_retur", "label": "Qty", "type": "number"},
+            {"key": "total_refund", "label": "Refund", "type": "money"}
+        ] %}
+        {% include "_table.html" %}
+    </article>
+</section>
+{% endblock %}

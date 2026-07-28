@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block heading %}Payment Analytics{% endblock %}
+{% block eyebrow %}Payment method and nominal contribution{% endblock %}
+{% block content %}
+<section class="grid two">
+    <article class="panel"><div class="panel-header"><h2>Payment Method</h2><span>Nominal share</span></div><div class="chart">{{ payment_chart | safe }}</div></article>
+    <article class="panel">
+        <div class="panel-header"><h2>Method Summary</h2><span>Transactions</span></div>
+        {% set rows = payment_methods %}
+        {% set columns = [
+            {"key": "metode_pembayaran", "label": "Method"},
+            {"key": "jumlah_transaksi", "label": "Transactions", "type": "number"},
+            {"key": "total_nominal", "label": "Nominal", "type": "money"}
+        ] %}
+        {% include "_table.html" %}
+    </article>
+</section>
+{% endblock %}

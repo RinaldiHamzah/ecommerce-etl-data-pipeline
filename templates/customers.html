@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block heading %}Customer Analytics{% endblock %}
+{% block eyebrow %}Segments and high-value customers{% endblock %}
+{% block content %}
+<section class="grid two">
+    <article class="panel"><div class="panel-header"><h2>Customer Segmentation</h2><span>Total spend by segment</span></div><div class="chart">{{ segment_chart | safe }}</div></article>
+    <article class="panel">
+        <div class="panel-header"><h2>Segment Summary</h2><span>Customer distribution</span></div>
+        {% set rows = segments %}
+        {% set columns = [
+            {"key": "segment", "label": "Segment"},
+            {"key": "jumlah_customer", "label": "Customers", "type": "number"},
+            {"key": "total_belanja", "label": "Spend", "type": "money"},
+            {"key": "avg_belanja", "label": "Avg Spend", "type": "money"}
+        ] %}
+        {% include "_table.html" %}
+    </article>
+</section>
+<section class="panel">
+    <div class="panel-header"><h2>Top Customers</h2><span>Highest spend</span></div>
+    {% set rows = top_customers %}
+    {% set columns = [
+        {"key": "customer_name", "label": "Name"},
+        {"key": "customer_email", "label": "Email"},
+        {"key": "segment", "label": "Segment"},
+        {"key": "kota", "label": "City"},
+        {"key": "total_order", "label": "Orders", "type": "number"},
+        {"key": "total_belanja", "label": "Spend", "type": "money"}
+    ] %}
+    {% include "_table.html" %}
+</section>
+{% endblock %}

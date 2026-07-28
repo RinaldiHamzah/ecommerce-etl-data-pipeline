@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block heading %}Dashboard Error{% endblock %}
+{% block filters %}{% endblock %}
+{% block content %}
+<section class="panel empty-state">
+    <strong>Something went wrong while loading the dashboard.</strong>
+    <span>{{ error }}</span>
+</section>
+{% endblock %}

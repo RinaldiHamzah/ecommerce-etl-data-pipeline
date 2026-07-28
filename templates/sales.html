@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block heading %}Sales Analytics{% endblock %}
+{% block eyebrow %}Revenue, order volume, and channels{% endblock %}
+{% block content %}
+<section class="grid two">
+    <article class="panel"><div class="panel-header"><h2>Daily Sales</h2><span>Revenue over time</span></div><div class="chart">{{ daily_chart | safe }}</div></article>
+    <article class="panel"><div class="panel-header"><h2>Monthly Sales</h2><span>Aggregated by month</span></div><div class="chart">{{ monthly_chart | safe }}</div></article>
+    <article class="panel"><div class="panel-header"><h2>Sales by City</h2><span>Revenue ranking</span></div><div class="chart">{{ city_chart | safe }}</div></article>
+    <article class="panel"><div class="panel-header"><h2>Sales by Channel</h2><span>Channel mix</span></div><div class="chart">{{ channel_chart | safe }}</div></article>
+</section>
+{% endblock %}

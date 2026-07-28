@@ -358,13 +358,27 @@ def clean_payments(df: pd.DataFrame, orders_df: pd.DataFrame) -> pd.DataFrame:
             "cod": "COD",
             "qris": "QRIS",
             "e-wallet": "E-Wallet",
+            "e wallet": "E-Wallet",
+            "ewallet": "E-Wallet",
             "bank transfer": "Bank Transfer",
+            "bank_transfer": "Bank Transfer",
+            "bank-transfer": "Bank Transfer",
             "virtual account": "Virtual Account",
+            "virtual_account": "Virtual Account",
+            "virtual-account": "Virtual Account",
             "credit card": "Credit Card",
+            "credit_card": "Credit Card",
             "creadit_card": "Credit Card",
             "credit-card": "Credit Card",
             "creadit card": "Credit Card"}
-        df["metode_pembayaran"] = (df["metode_pembayaran"].astype(str).str.strip().str.lower().replace(mapping))
+        df["metode_pembayaran"] = (
+            df["metode_pembayaran"]
+            .astype(str)
+            .str.strip()
+            .str.lower()
+            .str.replace(r"[\s_-]+", " ", regex=True)
+            .replace(mapping)
+        )
 
     if "status_pembayaran" in df.columns:
         df["status_pembayaran"] = df["status_pembayaran"].astype(str).str.strip().str.title()

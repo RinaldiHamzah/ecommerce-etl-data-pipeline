@@ -1,0 +1,41 @@
+<form class="filter-bar" method="get">
+    <label>
+        Start
+        <input type="date" name="start_date" value="{{ selected.start_date }}">
+    </label>
+    <label>
+        End
+        <input type="date" name="end_date" value="{{ selected.end_date }}">
+    </label>
+    <label>
+        City
+        <select name="kota">
+            <option value="">All cities</option>
+            {% for option in filter_options.kota %}
+            <option value="{{ option.value }}" {% if selected.kota == option.value %}selected{% endif %}>{{ option.value }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        Channel
+        <select name="channel">
+            <option value="">All channels</option>
+            {% for option in filter_options.channel %}
+            <option value="{{ option.value }}" {% if selected.channel == option.value %}selected{% endif %}>{{ option.value }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        Status
+        <select name="status">
+            <option value="">All status</option>
+            {% for option in filter_options.status %}
+            <option value="{{ option.value }}" {% if selected.status == option.value %}selected{% endif %}>{{ option.value }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <div class="filter-actions">
+        <button type="submit">Apply</button>
+        <a href="{{ request.path }}">Reset</a>
+    </div>
+</form>

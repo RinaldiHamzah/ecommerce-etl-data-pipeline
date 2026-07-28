@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block heading %}Executive Overview{% endblock %}
+{% block eyebrow %}Revenue, fulfillment, customer, and operational health{% endblock %}
+
+{% block content %}
+<section class="hero-panel">
+    <div>
+        <span class="section-label">Portfolio-ready analytics layer</span>
+        <h2>Monitor ecommerce performance from cleaned warehouse data.</h2>
+        <p>
+            This dashboard connects Flask to PostgreSQL views built from the ETL pipeline.
+            It highlights revenue quality, order behavior, payment mix, product performance,
+            returns, and promo usage in one operational view.
+        </p>
+    </div>
+    <div class="hero-facts">
+        <span>Warehouse tables: 9</span>
+        <span>Dashboard pages: 8</span>
+        <span>Validation: Passed</span>
+    </div>
+</section>
+
+<section class="metrics">
+    <article><span>Revenue</span><strong>{{ kpis.total_revenue | money }}</strong><small>Completed orders only</small></article>
+    <article><span>Orders</span><strong>{{ kpis.total_orders | number }}</strong><small>Filtered transaction count</small></article>
+    <article><span>Customers</span><strong>{{ kpis.active_customers | number }}</strong><small>Buyers in selected scope</small></article>
+    <article><span>AOV</span><strong>{{ kpis.avg_order_value | money }}</strong><small>Average completed basket</small></article>
+    <article><span>Products Sold</span><strong>{{ kpis.products_sold | number }}</strong><small>Total units moved</small></article>
+    <article><span>Return Rate</span><strong>{{ kpis.return_rate | percent }}</strong><small>{{ kpis.total_returns | number }} return records</small></article>
+    <article><span>Cancellation Rate</span><strong>{{ kpis.cancellation_rate | percent }}</strong><small>Orders that did not convert</small></article>
+    <article><span>Net Revenue</span><strong>{{ kpis.net_revenue | money }}</strong><small>Revenue after refund exposure</small></article>
+</section>
+
+<section class="insight-grid">
+    {% for insight in insights %}
+    <article class="insight-card">
+        <span>{{ insight.label }}</span>
+        <strong>{{ insight.title }}</strong>
+        <p>{{ insight.description }}</p>
+        <em>
+            {% if insight.format == "money" %}
+                {{ insight.value | money }}
+            {% else %}
+                {{ insight.value | number }}
+            {% endif %}
+        </em>
+    </article>
+    {% endfor %}
+</section>
+
+<section class="grid two">
+    <article class="panel">
+        <div class="panel-header"><h2>Revenue Trend</h2><span>Daily sales</span></div>
+        <div class="chart">{{ revenue_chart | safe }}</div>
+    </article>
+    <article class="panel">
+        <div class="panel-header"><h2>Payment Method</h2><span>Nominal share</span></div>
+        <div class="chart">{{ payment_chart | safe }}</div>
+    </article>
+</section>
+
+<section class="grid two">
+    <article class="panel">
+        <div class="panel-header"><h2>Top Products</h2><span>Revenue contribution</span></div>
+        <div class="rank-list">
+            {% for product in top_products[:8] %}
+            <div class="rank-item">
+                <div><strong>{{ product.product_name }}</strong><span>{{ product.kategori }} - {{ product.total_qty_terjual | number }} sold</span></div>
+                <em>{{ product.total_revenue | money }}</em>
+                <div class="bar-track full"><div class="bar-fill green" data-width="{{ product.bar_width }}"></div></div>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+    <article class="panel">
+        <div class="panel-header"><h2>Recent Orders</h2><span>Latest records</span></div>
+        {% set rows = recent_orders %}
+        {% set columns = [
+            {"key": "order_id", "label": "Order"},
+            {"key": "tanggal_order", "label": "Date"},
+            {"key": "product_name", "label": "Product"},
+            {"key": "status_order", "label": "Status", "type": "badge"},
+            {"key": "total_harga", "label": "Total", "type": "money"}
+        ] %}
+        {% include "_table.html" %}
+    </article>
+</section>
+
+<section class="grid two">
+    <article class="panel">
+        <div class="panel-header"><h2>Return Watchlist</h2><span>Highest return reasons</span></div>
+        <div class="rank-list">
+            {% for row in return_reasons %}
+            <div class="rank-item">
+                <div><strong>{{ row.alasan_return }}</strong><span>{{ row.total_qty_retur | number }} items returned</span></div>
+                <em>{{ row.total_refund | money }}</em>
+                <div class="bar-track full"><div class="bar-fill red" data-width="{{ row.bar_width }}"></div></div>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+    <article class="panel">
+        <div class="panel-header"><h2>Promo Signals</h2><span>Usage and attributed revenue</span></div>
+        <div class="rank-list">
+            {% for promo in promo_effectiveness %}
+            <div class="rank-item">
+                <div><strong>{{ promo.promo_code }}</strong><span>{{ promo.nama_promo }}</span></div>
+                <em>{{ promo.jumlah_pemakaian | number }} uses</em>
+                <div class="bar-track full"><div class="bar-fill amber" data-width="{{ promo.bar_width }}"></div></div>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+</section>
+{% endblock %}

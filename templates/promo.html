@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block heading %}Promo Analytics{% endblock %}
+{% block eyebrow %}Usage and attributed revenue{% endblock %}
+{% block content %}
+<section class="grid two">
+    <article class="panel"><div class="panel-header"><h2>Promo Usage</h2><span>Effectiveness</span></div><div class="chart">{{ promo_chart | safe }}</div></article>
+    <article class="panel">
+        <div class="panel-header"><h2>Promo Effectiveness</h2><span>Revenue attribution</span></div>
+        {% set rows = promo_effectiveness %}
+        {% set columns = [
+            {"key": "promo_code", "label": "Code"},
+            {"key": "nama_promo", "label": "Name"},
+            {"key": "status", "label": "Status", "type": "badge"},
+            {"key": "jumlah_pemakaian", "label": "Uses", "type": "number"},
+            {"key": "total_revenue_terkait", "label": "Revenue", "type": "money"}
+        ] %}
+        {% include "_table.html" %}
+    </article>
+</section>
+{% endblock %}

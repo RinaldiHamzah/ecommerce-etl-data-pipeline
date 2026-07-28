@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Ecommerce Order Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <a class="brand" href="{{ url_for('dashboard.overview') }}">
+            <span class="brand-mark">EO</span>
+            <span>
+                <strong>Ecommerce Order</strong>
+                <small>Data Engineering Portfolio</small>
+            </span>
+        </a>
+        <nav class="nav">
+            <a class="{% if active_page == 'overview' %}active{% endif %}" href="{{ url_for('dashboard.overview') }}">Overview</a>
+            <a class="{% if active_page == 'sales' %}active{% endif %}" href="{{ url_for('dashboard.sales') }}">Sales</a>
+            <a class="{% if active_page == 'products' %}active{% endif %}" href="{{ url_for('dashboard.products') }}">Products</a>
+            <a class="{% if active_page == 'customers' %}active{% endif %}" href="{{ url_for('dashboard.customers') }}">Customers</a>
+            <a class="{% if active_page == 'inventory' %}active{% endif %}" href="{{ url_for('dashboard.inventory') }}">Inventory</a>
+            <a class="{% if active_page == 'payments' %}active{% endif %}" href="{{ url_for('dashboard.payments') }}">Payments</a>
+            <a class="{% if active_page == 'returns' %}active{% endif %}" href="{{ url_for('dashboard.returns') }}">Returns</a>
+            <a class="{% if active_page == 'promo' %}active{% endif %}" href="{{ url_for('dashboard.promo') }}">Promo</a>
+        </nav>
+    </aside>
+
+    <main class="page">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">{% block eyebrow %}Warehouse Analytics{% endblock %}</p>
+                <h1>{% block heading %}Executive Overview{% endblock %}</h1>
+            </div>
+            <div class="top-actions">
+                <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle theme">Theme</button>
+                <span class="status-pill">PostgreSQL Views</span>
+            </div>
+        </header>
+
+        {% block filters %}
+        {% include "_filters.html" %}
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/filters.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+</body>
+</html>

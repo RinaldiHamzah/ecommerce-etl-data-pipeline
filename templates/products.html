@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block heading %}Product Analytics{% endblock %}
+{% block eyebrow %}Products, categories, and returns{% endblock %}
+{% block content %}
+<section class="grid two">
+    <article class="panel wide"><div class="panel-header"><h2>Top Products</h2><span>Revenue</span></div><div class="chart">{{ product_chart | safe }}</div></article>
+    <article class="panel"><div class="panel-header"><h2>Top Categories</h2><span>Revenue share</span></div><div class="chart">{{ category_chart | safe }}</div></article>
+</section>
+<section class="panel">
+    <div class="panel-header"><h2>Product Performance</h2><span>Sales and return rate</span></div>
+    {% set rows = top_products %}
+    {% set columns = [
+        {"key": "product_name", "label": "Product"},
+        {"key": "kategori", "label": "Category"},
+        {"key": "jumlah_order", "label": "Orders", "type": "number"},
+        {"key": "total_qty_terjual", "label": "Qty Sold", "type": "number"},
+        {"key": "total_revenue", "label": "Revenue", "type": "money"},
+        {"key": "return_rate_persen", "label": "Return Rate", "type": "percent"}
+    ] %}
+    {% include "_table.html" %}
+</section>
+{% endblock %}

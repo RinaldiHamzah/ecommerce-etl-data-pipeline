@@ -36,12 +36,9 @@ def run_test_command() -> int:
 
 
 def run_dashboard_command() -> int:
-    command = [sys.executable, "-m", "streamlit", "run", "app.py"]
-    try:
-        return subprocess.call(command)
-    except ModuleNotFoundError:
-        print("Streamlit belum terinstall. Jalankan: pip install streamlit")
-        return 1
+    command = [sys.executable, "app.py"]
+    print("Dashboard Flask berjalan di http://127.0.0.1:5001")
+    return subprocess.call(command)
 
 
 def run_all_command() -> int:
@@ -74,7 +71,7 @@ def build_parser() -> argparse.ArgumentParser:
         help=(
             "pipeline=bersihkan raw CSV, validate=cek kualitas data, "
             "test=jalankan automated test ringan, "
-            "dashboard=jalankan dashboard Streamlit, "
+            "dashboard=jalankan dashboard Flask, "
             "init-db=buat ulang schema PostgreSQL, load-db=load CSV clean, "
             "all=jalankan semua workflow"),)
     return parser
