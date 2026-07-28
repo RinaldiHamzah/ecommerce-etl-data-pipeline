@@ -10,8 +10,7 @@
     --blue: #4267d8;
     --green: #2f9d62;
     --amber: #c48722;
-    --red: #c34b57;
-}
+    --red: #c34b57;}
 
 [data-theme="dark"] {
     --bg: #0f1722;
@@ -20,8 +19,7 @@
     --muted: #9aa8ba;
     --line: #263548;
     --nav: #0b111a;
-    --nav-soft: #182437;
-}
+    --nav-soft: #182437;}
 
 * { box-sizing: border-box; }
 
@@ -29,13 +27,11 @@ body {
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: Inter, "Segoe UI", Arial, sans-serif;
-}
+    font-family: Inter, "Segoe UI", Arial, sans-serif;}
 
 a { color: inherit; }
 
 button,
 input,
 select {
-    font: inherit;
-}
+    font: inherit;}

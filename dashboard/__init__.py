@@ -5,7 +5,6 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 from flask import Flask
-
 from dashboard.routes import dashboard_bp
 from dashboard.utils import money, number, percent
 
@@ -30,8 +29,8 @@ def configure_logging(app: Flask) -> None:
         log_dir / "dashboard.log",
         maxBytes=1_000_000,
         backupCount=3,
-        encoding="utf-8",
-    )
+        encoding="utf-8",)
+    
     handler.setLevel(logging.INFO)
     handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s - %(message)s"))
 

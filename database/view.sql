@@ -82,7 +82,7 @@ SELECT
     ROUND(
         COALESCE(SUM(r.quantity_return), 0)::NUMERIC
         / NULLIF(SUM(o.quantity), 0) * 100, 2
-    )                                                                AS return_rate_persen
+    )                                                              AS return_rate_persen
 FROM products pd
 LEFT JOIN orders o   ON o.product_id = pd.product_id
 LEFT JOIN returns r  ON r.order_id = o.order_id

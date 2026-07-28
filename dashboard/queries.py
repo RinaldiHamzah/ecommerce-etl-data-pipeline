@@ -40,8 +40,7 @@ RETURN_RATE = """
 FILTER_OPTIONS = {
     "kota": "SELECT DISTINCT kota AS value FROM view_order_details WHERE kota IS NOT NULL ORDER BY kota",
     "channel": "SELECT DISTINCT channel AS value FROM view_order_details WHERE channel IS NOT NULL ORDER BY channel",
-    "status": "SELECT DISTINCT status_order AS value FROM view_order_details WHERE status_order IS NOT NULL ORDER BY status_order",
-}
+    "status": "SELECT DISTINCT status_order AS value FROM view_order_details WHERE status_order IS NOT NULL ORDER BY status_order",}
 
 DAILY_SALES = """
     SELECT tanggal, jumlah_order, total_revenue
