@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from dashboard import queries
-from dashboard.services import fetch_one
-from dashboard.utils import as_float
+from dashboard.service import fetch_one
+from dashboard.loping import as_float
 
 
 def get_kpis(where_sql: str, params: tuple) -> dict:

@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from flask import Blueprint, current_app, render_template, request
 
-from dashboard import charts, queries
-from dashboard.filters import build_order_filters
-from dashboard.metrics import get_kpis
-from dashboard.services import fetch_all
-from dashboard.utils import add_bar_width, normalize_payment_label
+from dashboard import chart, queries
+from dashboard.filter import build_order_filters
+from dashboard.metric import get_kpis
+from dashboard.service import fetch_all
+from dashboard.loping import add_bar_width, normalize_payment_label
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -22,8 +22,7 @@ def base_context(active_page: str) -> dict:
         "selected": selected,
         "filter_options": filter_options(),
         "where_sql": where_sql,
-        "params": params,
-    }
+        "params": params,}
 
 
 @dashboard_bp.errorhandler(Exception)
@@ -62,36 +61,30 @@ def overview():
                 "title": top_product.get("product_name", "-"),
                 "description": f"{top_product.get('kategori', '-')} leads revenue contribution.",
                 "value": top_product.get("total_revenue", 0),
-                "format": "money",
-            },
+                "format": "money",},
             {
                 "label": "Preferred payment",
                 "title": top_payment.get("metode_pembayaran", "-"),
                 "description": f"{top_payment.get('jumlah_transaksi', 0)} successful payment records.",
                 "value": top_payment.get("total_nominal", 0),
-                "format": "money",
-            },
+                "format": "money",},
             {
                 "label": "Return hotspot",
                 "title": top_return.get("alasan_return", "-"),
                 "description": "Most common return reason to investigate.",
                 "value": top_return.get("jumlah_retur", 0),
-                "format": "number",
-            },
+                "format": "number",},
             {
                 "label": "Best promo usage",
                 "title": top_promo.get("promo_code", "-"),
                 "description": top_promo.get("nama_promo", "Promo usage performance."),
                 "value": top_promo.get("jumlah_pemakaian", 0),
-                "format": "number",
-            },
+                "format": "number",},
         ],
         recent_orders=fetch_all(queries.recent_orders(context["where_sql"]), context["params"]),
-        revenue_chart=charts.line_chart(daily_sales, "tanggal", "total_revenue", "Revenue"),
-        payment_chart=charts.donut_chart(payment_methods, "metode_pembayaran", "total_nominal", "Payment Method"),
-    )
+        revenue_chart=chart.line_chart(daily_sales, "tanggal", "total_revenue", "Revenue"),
+        payment_chart=chart.donut_chart(payment_methods, "metode_pembayaran", "total_nominal", "Payment Method"),)
     return render_template("dashboard.html", **context)
-
 
 @dashboard_bp.route("/sales")
 def sales():
@@ -105,13 +98,11 @@ def sales():
         monthly_sales=monthly_sales,
         sales_by_city=sales_by_city,
         sales_by_channel=sales_by_channel,
-        daily_chart=charts.line_chart(daily_sales, "tanggal", "total_revenue", "Daily Revenue"),
-        monthly_chart=charts.bar_chart(monthly_sales, "bulan", "total_revenue", "Monthly Revenue"),
-        city_chart=charts.bar_chart(sales_by_city, "kota", "total_revenue", "Sales by City"),
-        channel_chart=charts.donut_chart(sales_by_channel, "channel", "total_revenue", "Sales by Channel"),
-    )
+        daily_chart=chart.line_chart(daily_sales, "tanggal", "total_revenue", "Daily Revenue"),
+        monthly_chart=chart.bar_chart(monthly_sales, "bulan", "total_revenue", "Monthly Revenue"),
+        city_chart=chart.bar_chart(sales_by_city, "kota", "total_revenue", "Sales by City"),
+        channel_chart=chart.donut_chart(sales_by_channel, "channel", "total_revenue", "Sales by Channel"),)
     return render_template("sales.html", **context)
-
 
 @dashboard_bp.route("/products")
 def products():
@@ -121,11 +112,9 @@ def products():
     context.update(
         top_products=top_products,
         top_categories=top_categories,
-        product_chart=charts.horizontal_bar(top_products, "total_revenue", "product_name", "Product Revenue"),
-        category_chart=charts.donut_chart(top_categories, "kategori", "total_revenue", "Category Revenue"),
-    )
+        product_chart=chart.horizontal_bar(top_products, "total_revenue", "product_name", "Product Revenue"),
+        category_chart=chart.donut_chart(top_categories, "kategori", "total_revenue", "Category Revenue"),)
     return render_template("products.html", **context)
-
 
 @dashboard_bp.route("/customers")
 def customers():
@@ -135,10 +124,8 @@ def customers():
     context.update(
         segments=segments,
         top_customers=top_customers,
-        segment_chart=charts.donut_chart(segments, "segment", "total_belanja", "Customer Segments"),
-    )
+        segment_chart=chart.donut_chart(segments, "segment", "total_belanja", "Customer Segments"),)
     return render_template("customers.html", **context)
-
 
 @dashboard_bp.route("/inventory")
 def inventory():
@@ -148,11 +135,9 @@ def inventory():
     context.update(
         inventory_status=inventory_status,
         supplier_performance=supplier_performance,
-        stock_chart=charts.bar_chart(inventory_status, "product_name", "total_stok", "Stock", "amber"),
-        supplier_chart=charts.bar_chart(supplier_performance, "nama_supplier", "avg_lead_time", "Lead Time", "blue"),
-    )
+        stock_chart=chart.bar_chart(inventory_status, "product_name", "total_stok", "Stock", "amber"),
+        supplier_chart=chart.bar_chart(supplier_performance, "nama_supplier", "avg_lead_time", "Lead Time", "blue"),)
     return render_template("inventory.html", **context)
-
 
 @dashboard_bp.route("/payments")
 def payments():
@@ -162,10 +147,8 @@ def payments():
         row["metode_pembayaran"] = normalize_payment_label(row.get("metode_pembayaran"))
     context.update(
         payment_methods=payment_methods,
-        payment_chart=charts.donut_chart(payment_methods, "metode_pembayaran", "total_nominal", "Payment Method"),
-    )
+        payment_chart=chart.donut_chart(payment_methods, "metode_pembayaran", "total_nominal", "Payment Method"),)
     return render_template("payments.html", **context)
-
 
 @dashboard_bp.route("/returns")
 def returns():
@@ -173,8 +156,7 @@ def returns():
     return_reasons = fetch_all(queries.RETURN_REASONS)
     context.update(
         return_reasons=return_reasons,
-        return_chart=charts.bar_chart(return_reasons, "alasan_return", "jumlah_retur", "Return Reasons", "red"),
-    )
+        return_chart=chart.bar_chart(return_reasons, "alasan_return", "jumlah_retur", "Return Reasons", "red"),)
     return render_template("returns.html", **context)
 
 
@@ -184,6 +166,5 @@ def promo():
     promo_effectiveness = fetch_all(queries.PROMO_EFFECTIVENESS)
     context.update(
         promo_effectiveness=promo_effectiveness,
-        promo_chart=charts.bar_chart(promo_effectiveness, "promo_code", "jumlah_pemakaian", "Promo Usage", "green"),
-    )
+        promo_chart=chart.bar_chart(promo_effectiveness, "promo_code", "jumlah_pemakaian", "Promo Usage", "green"),)
     return render_template("promo.html", **context)

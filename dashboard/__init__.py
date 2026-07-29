@@ -5,8 +5,8 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 from flask import Flask
-from dashboard.routes import dashboard_bp
-from dashboard.utils import money, number, percent
+from dashboard.router import dashboard_bp
+from dashboard.loping import money, number, percent
 
 
 def create_app() -> Flask:

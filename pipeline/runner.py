@@ -4,6 +4,7 @@ import sys
 if __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from logger import logger
 from pipeline.cleaning import (
     clean_customers,
     clean_inventory,
@@ -16,12 +17,13 @@ from pipeline.cleaning import (
     clean_suppliers,)
 from pipeline.input_output import load_raw_data, write_processed_files
 from pipeline.path import RAW_FILES, ROOT, WAREHOUSE_DIR
-from pipeline.cek_quality import check_zero_columns
+from pipeline.data_quality import check_zero_columns
 from pipeline.validation import print_validation_report, validate_tables
 
 def run_pipeline() -> None:
-    print("ROOT:", ROOT)
-    print("WAREHOUSE_DIR:", WAREHOUSE_DIR)
+    logger.info("ETL Pipeline dimulai.")
+    logger.info(f"ROOT          : {ROOT}")
+    logger.info(f"WAREHOUSE_DIR : {WAREHOUSE_DIR}")
 
     cleaned_tables = {}
 
@@ -53,15 +55,22 @@ def run_pipeline() -> None:
     cleaned_tables["order_promo"] = order_promo
 
     write_processed_files(cleaned_tables)
+    logger.info("Menyimpan hasil cleaning ke folder data/warehouse...")
+    logger.info("Semua file CSV berhasil disimpan.")
+
 
     print(f"Pipeline selesai. Data disimpan di {WAREHOUSE_DIR}")
     for name, tdf in cleaned_tables.items():
-        print(f"- {name}: {len(tdf)} baris, {len(tdf.columns)} kolom")
+        logger.info(f"{name:<15} : {len(tdf):>5} rows | {len(tdf.columns):>2} columns")
 
     check_zero_columns(cleaned_tables)
+    logger.info("Menjalankan data quality check...")
     issues = validate_tables(cleaned_tables)
+    if issues:
+        logger.warning(f"Validasi menemukan {issues} issue.")
+    else:
+        logger.info("Validasi selesai tanpa issue.")
     print_validation_report(issues)
-
 
 if __name__ == "__main__":
     run_pipeline()

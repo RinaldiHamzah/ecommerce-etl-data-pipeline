@@ -1,21 +1,23 @@
 import re
 import pandas as pd
 from pipeline.path import WAREHOUSE_DIR
+from logger import logger
 
 def check_zero_columns(cleaned_tables: dict[str, pd.DataFrame] | None = None) -> None:
+    logger.info("Memulai pengecekan nilai dengan akhiran '.0'.")
     dot_zero_pattern = re.compile(r"^-?\d+\.0$")
     any_found = False
-
     if cleaned_tables is not None:
         table_names = list(cleaned_tables.keys())
     else:
-        table_names = [p.stem.replace("_clean", "") for p in WAREHOUSE_DIR.glob("*_clean.csv")]
-
+        table_names = [
+            p.stem.replace("_clean", "")
+            for p in WAREHOUSE_DIR.glob("*_clean.csv")]
     for name in table_names:
         file_path = WAREHOUSE_DIR / f"{name}_clean.csv"
         if not file_path.exists():
+            logger.warning(f"{file_path.name} tidak ditemukan.")
             continue
-
         df_check = pd.read_csv(file_path, dtype=str)
         bermasalah = []
         for col in df_check.columns:
@@ -27,17 +29,16 @@ def check_zero_columns(cleaned_tables: dict[str, pd.DataFrame] | None = None) ->
                 jumlah = cocok.sum()
                 contoh = nilai_non_null[cocok].iloc[0]
                 bermasalah.append((col, jumlah, contoh))
-
         if bermasalah:
             any_found = True
-            print(f"{name}_clean.csv -- ditemukan kolom dengan '.0':")
+            logger.warning(f"{name}_clean.csv masih memiliki nilai '.0'.")
             for col, jumlah, contoh in bermasalah:
-                print(f"     - {col}: {jumlah} baris (contoh nilai: '{contoh}')")
+                logger.warning(
+                    f"{name}.{col} -> {jumlah} baris | contoh: {contoh}")
         else:
-            print(f"{name}_clean.csv -- aman, tidak ada '.0'")
+            logger.info(f"{name}_clean.csv bersih.")
 
     if not any_found:
-        print("\nSemua file bersih dari sisa '.0'.")
+        logger.info("Semua file bersih dari nilai '.0'.")
     else:
-        print("\nAda file yang masih bermasalah -- cek fungsi clean_<nama_tabel> untuk kolom di atas,")
-        print("pastikan ada .astype(int) SETELAH semua nilai NaN ditangani (dropna/fillna).")
+        logger.warning("Masih ditemukan nilai '.0' pada beberapa file.")

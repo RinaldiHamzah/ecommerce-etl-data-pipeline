@@ -291,13 +291,13 @@ def load_warehouse_tables() -> dict[str, pd.DataFrame]:
 
 
 def print_validation_report(issues: list[ValidationIssue]) -> None:
-    print("\nValidasi data:")
+    print("\nValidasi:")
     if not issues:
-        print("- Semua validasi lolos.")
+        print("✓ Semua Validasi Data Successfully")
         return
 
     total_rows = sum(issue.count for issue in issues)
-    print(f"- Ditemukan {len(issues)} jenis issue ({total_rows} baris terdampak).")
+    print(f"Ditemukan {len(issues)} jenis issue ({total_rows} baris terdampak).")
     for issue in issues:
         print(f"- [{issue.severity}] {issue.table} / {issue.rule}: {issue.message} ({issue.count})")
         if issue.examples:

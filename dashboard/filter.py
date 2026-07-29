@@ -1,7 +1,5 @@
 from __future__ import annotations
-
 from typing import Any
-
 
 def build_order_filters(args) -> tuple[str, tuple[Any, ...], dict[str, str]]:
     filters = []
