@@ -168,7 +168,6 @@ def validate_required_columns(tables: dict[str, pd.DataFrame]) -> list[Validatio
                 f"Kolom wajib '{col}' kosong/null.",
                 int(blank_mask.sum()),
                 examples(df, blank_mask, [col]),)
-
     return issues
 
 

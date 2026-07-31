@@ -12,10 +12,10 @@
 <body>
     <aside class="sidebar">
         <a class="brand" href="{{ url_for('dashboard.overview') }}">
-            <span class="brand-mark">EO</span>
+            <span class="brand-mark">order</span>
             <span>
                 <strong>Ecommerce Order</strong>
-                <small>Data Engineering Portfolio</small>
+                <small>Data Engineering </small>
             </span>
         </a>
         <nav class="nav">
@@ -38,12 +38,12 @@
             </div>
             <div class="top-actions">
                 <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle theme">Theme</button>
-                <span class="status-pill">PostgreSQL Views</span>
+                <span class="status-pill"></span>
             </div>
         </header>
 
-        {% block filters %}
-        {% include "_filters.html" %}
+        {% block filter %}
+        {% include "filter.html" %}
         {% endblock %}
 
         {% block content %}{% endblock %}

@@ -6,9 +6,9 @@ import plotly.graph_objects as go
 
 
 COLORS = {
-    "teal": "#0f9f9a",
-    "blue": "#4267d8",
-    "green": "#2f9d62",
+    "teal": "#0E42B3",
+    "blue": "#103ec7",
+    "green": "#012712",
     "amber": "#c48722",
     "red": "#c34b57",
     "ink": "#1d2733",}

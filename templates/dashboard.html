@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 
 {% block heading %}Executive Overview{% endblock %}
-{% block eyebrow %}Revenue, fulfillment, customer, and operational health{% endblock %}
+{% block eyebrow %}Revenue, fulfillment, customer, and operational{% endblock %}
 
 {% block content %}
 <section class="hero-panel">
     <div>
-        <span class="section-label">Portfolio-ready analytics layer</span>
-        <h2>Monitor ecommerce performance from cleaned warehouse data.</h2>
+        <span class="section-label"> Dashboard Analytics Layer</span>
+        <h2>Monitor Ecommerce Order Performance</h2>
         <p>
-            This dashboard connects Flask to PostgreSQL views built from the ETL pipeline.
-            It highlights revenue quality, order behavior, payment mix, product performance,
-            returns, and promo usage in one operational view.
+            Operational dashboard ETL pipelines.
+            Real-time visibility into revenue health, 
+            customer purchasing behavior, payment methods, 
+            product performance, returns, and promotional impact.
         </p>
     </div>
     <div class="hero-facts">
@@ -83,7 +84,7 @@
             {"key": "status_order", "label": "Status", "type": "badge"},
             {"key": "total_harga", "label": "Total", "type": "money"}
         ] %}
-        {% include "_table.html" %}
+        {% include "table.html" %}
     </article>
 </section>
 
